@@ -1,4 +1,5 @@
 from collections import deque
+from functools import lru_cache
 
 
 def first_part(file):
@@ -39,4 +40,67 @@ def first_part(file):
     return split
 
 
-print(first_part('test2.txt'))
+def second_part_iterative(file) -> int:
+    spittler_positions = set()
+    with open(file) as f:
+        for i, line in enumerate(f):
+            for j, c in enumerate(line):
+                if c == '^':
+                    spittler_positions.add((j, i))
+                if c == 'S':
+                    initial_position = (j, i)
+    max_y = i
+    stack = deque([(initial_position, {initial_position})])
+    position_seen = set()
+    possible_path = 0
+    while stack:
+        current_pos, path = stack.popleft()
+        new_x, new_y = current_pos[0], current_pos[1] + 1
+        if new_y == max_y:
+            position_seen |= path
+            possible_path += 1
+            continue
+        new_position = (new_x, new_y)
+        if new_position in position_seen:
+            continue
+        if new_position in spittler_positions:
+            left = (new_x - 1, new_y)
+            right = (new_x + 1, new_y)
+            if left not in position_seen:
+                stack.append((left, path | {left}))
+            if right not in position_seen:
+                stack.append((right, path | {right}))
+        else:
+            stack.append((new_position, path | {new_position}))
+    return possible_path
+
+
+def second_part_recursive(file) -> int:
+    spittler_positions = set()
+    with open(file) as f:
+        for i, line in enumerate(f):
+            for j, c in enumerate(line):
+                if c == '^':
+                    spittler_positions.add((j, i))
+                if c == 'S':
+                    initial_position = (j, i)
+    max_y = j
+    max_path = 0
+
+    @lru_cache
+    def bfs(position):
+        if position[1] == max_y:
+            return 1
+        new_position = position[0], position[1] + 1
+        if new_position in spittler_positions:
+            left = (new_position[0] - 1, new_position[1])
+            right = (new_position[0] + 1, new_position[1])
+            return bfs(right) + bfs(left)
+        return bfs(new_position)
+
+    max_path += bfs(initial_position)
+    return max_path
+
+
+# print('First part', first_part('test2.txt'))
+print('Second part:', second_part_recursive('test2.txt'))

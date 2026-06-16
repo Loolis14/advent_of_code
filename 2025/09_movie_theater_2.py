@@ -5,8 +5,6 @@ class Map:
         self.height = height
         self.width = width
         self.tiles_original = tiles
-        self.map = [['#' if (j, i) in tiles else '.' for j in range(width)]
-                    for i in range(height)]
         self.tiles_add = set(tiles)
 
     def first_part(self) -> int:
@@ -17,7 +15,41 @@ class Map:
                 max_area = max(max_area, area)
         return max_area
 
-    def second_part(self) -> int:
+    def second_part_set(self) -> int:
+        self.possible_abscissa()
+        self.possible_ordinate()
+        return self.find_max_area()
+
+    def possible_abscissa(self) -> None:
+        tiles_sort = sorted(self.tiles_original, key=lambda x: (x[1], x[0]))
+        i = 0
+        while i < len(tiles_sort):
+            y = tiles_sort[i][1]
+            x_start = tiles_sort[i][0]
+            i += 1
+            while i < len(tiles_sort) and tiles_sort[i][1] == y:
+                i += 1
+            x_end = tiles_sort[i - 1][0]
+            for x in range(x_start, x_end):
+                self.tiles_add.add((x, y))
+
+    def possible_ordinate(self) -> None:
+        tiles = list(self.tiles_add)
+        tiles_sort = sorted(tiles, key=lambda x: (x[0], x[1]))
+        i = 0
+        while i < len(tiles_sort):
+            x = tiles_sort[i][0]
+            y_start = tiles_sort[i][1]
+            i += 1
+            while i < len(tiles_sort) and tiles_sort[i][0] == x:
+                i += 1
+            y_end = tiles_sort[i - 1][1]
+            for y in range(y_start, y_end):
+                self.tiles_add.add((x, y))
+
+    def second_part_map(self) -> int:
+        self.map = [['#' if (j, i) in tiles else '.'
+                     for j in range(self.width)] for i in range(self.height)]
         self.fill_abscissa()
         self.fill_ordinate()
         return self.find_max_area()
@@ -91,8 +123,8 @@ def parsing(file: str) -> list[tuple[int, int]]:
 
 
 if __name__ == '__main__':
-    tiles = parsing('test1.txt')
+    tiles = parsing('test2.txt')
     map1 = Map(tiles, max(tiles, key=lambda x: x[1])[1] + 1, max(tiles)[0] + 1)
-    print(map1.height, map1.width)
-    print("First part result: ", map1.first_part())
-    print("Second part result: ", map1.second_part())
+    # print("First part result: ", map1.first_part())
+    # print("Second part result: ", map1.second_part_map())
+    print("Second part result: ", map1.second_part_set())
