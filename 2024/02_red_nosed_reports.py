@@ -1,4 +1,12 @@
-# Deuxieme partie a finir
+from enum import Enum
+
+
+class Fixe(Enum):
+    TOO_MUCH = 0
+    ONE_ERROR_D = 1
+    ONE_ERROR_I = 2
+    SAFE = 3
+
 
 def first_part(file: str) -> int:
     safe_reports = 0
@@ -22,23 +30,51 @@ def first_part(file: str) -> int:
     return safe_reports
 
 
-def find_error(levels: list[int]) -> dict[str, int]:
-    error_hash = {'inf_0': 0, 'equal': 0, 'sup_0': 0,
-                  'too_much': 0, 'index_error': 0}
+def first_check(levels: list[int]) -> int:
+    increase = 0
+    decrease = 0
+    error = 0
+    for i in range(len(levels) - 1):
+        if levels[i] > levels[i + 1]:
+            decrease += 1
+        if levels[i] < levels[i + 1]:
+            increase += 1
+        if levels[i] == levels[i + 1] or abs(levels[i] - levels[i + 1]) > 3:
+            error += 1
+    if min(increase, decrease) + error > 1:
+        return Fixe.TOO_MUCH
+    elif min(increase, decrease) + error == 1:
+        if increase > decrease:
+            return Fixe.ONE_ERROR_I
+        else:
+            return Fixe.ONE_ERROR_D
+    else:
+        return Fixe.SAFE
 
-    for i in range(1, len(levels)):
-        number = levels[i - 1] - levels[i]
-        if number == 0:
-            error_hash['equal'] += 1
-            error_hash['index_error'] = i
-        elif -3 > number or number > 3:
-            error_hash['too_much'] += 1
-            error_hash['index_error'] = i
-        elif number < 0:
-            error_hash['inf_0'] += 1
-        elif number > 0:
-            error_hash['sup_0'] += 1
-    return error_hash
+
+def remove_error(levels: list[int], sens: Fixe) -> list[int]:
+    increasing = True if sens.value == 2 else False
+    new_levels = [levels[0]]
+    i = 1
+    while i < len(levels):
+        if levels[i] == new_levels[-1]:
+            i += 1
+            break
+        if increasing and levels[i] < new_levels[-1]:
+            i += 1
+            break
+        if not increasing and levels[i] > new_levels[-1]:
+            i += 1
+            break
+        if levels[i] - new_levels[-1] > 3:
+            i += 1
+            break
+        new_levels.append(levels[i])
+        i += 1
+    while i < len(levels):
+        new_levels.append(levels[i])
+        i += 1
+    return new_levels
 
 
 def second_part(file: str) -> int:
@@ -46,65 +82,18 @@ def second_part(file: str) -> int:
     with open(file) as f:
         for line in f:
             levels = list(map(int, line.split()))
-            errors_hash = find_error(levels)
-            bad_lvl = (errors_hash['equal'] + errors_hash['too_much']
-                       + min(errors_hash['inf_0'], errors_hash['sup_0']))
-            if bad_lvl == 0:
+            fixe_num = first_check(levels)
+            if fixe_num == Fixe.TOO_MUCH:
+                continue
+            elif fixe_num == Fixe.SAFE:
                 safe_reports += 1
                 continue
-            elif bad_lvl > 1:
-                continue
-            elif bad_lvl == 1:
-                if errors_hash['equal'] == 1:
-                    new_level = [levels[i] for i in range(len(levels))
-                                 if i != errors_hash['index_error']]
-                    second_chance_hash = find_error(new_level)
-                elif errors_hash['inf_0'] == 1:
-                    index = 1
-                    while index < len(levels):
-                        if levels[index - 1] > levels[index]:
-                            break
-                        index += 1
-                    new_level = [levels[i] for i in range(len(levels))
-                                 if i != index]
-                    second_chance_hash = find_error(new_level)
-                elif errors_hash['sup_0'] == 1:
-                    index = 1
-                    while index < len(levels):
-                        if levels[index - 1] > levels[index]:
-                            break
-                        index += 1
-                    new_level = [levels[i] for i in range(len(levels))
-                                 if i != index]
-                    second_chance_hash = find_error(new_level)
-                elif errors_hash['too_much'] == 1:
-                    first_case = [levels[i] for i in range(len(levels))
-                                  if i != errors_hash['index_error']]
-                    second_case = [levels[i] for i in range(len(levels))
-                                   if i != errors_hash['index_error'] - 1]
-                    second_chance_hash1 = find_error(first_case)
-                    second_chance_hash2 = find_error(second_case)
-                    second_chance1 = (
-                        second_chance_hash1['equal'] +
-                        second_chance_hash1['too_much'] +
-                        min(second_chance_hash1['inf_0'],
-                            second_chance_hash1['sup_0']))
-                    second_chance2 = (
-                        second_chance_hash2['equal'] +
-                        second_chance_hash2['too_much'] +
-                        min(second_chance_hash2['inf_0'],
-                            second_chance_hash2['sup_0']))
-                    if second_chance1 == 0 or second_chance2 == 0:
-                        safe_reports += 1
-                    continue
-                second_chance = (second_chance_hash['equal'] +
-                                 second_chance_hash['too_much']
-                                 + min(second_chance_hash['inf_0'],
-                                       second_chance_hash['sup_0']))
-                if second_chance == 0:
-                    safe_reports += 1
+            new_levels = remove_error(levels, fixe_num)
+            second_fix_num = first_check(new_levels)
+            if second_fix_num == Fixe.SAFE:
+                safe_reports += 1
     return safe_reports
 
 
 # print('First part solution is:', first_part('test2.txt'))
-print('Second part solution is:', second_part('2024/test2.txt'))
+print('Second part solution is:', second_part('test2.txt'))
