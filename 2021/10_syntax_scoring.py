@@ -1,5 +1,4 @@
 from typing import Union
-# la syntaxe '|' dans le typing valide a partir de 3.10
 
 
 def found_illegal(line: str) -> Union[str, list[str]]:

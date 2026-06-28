@@ -19,8 +19,6 @@ def second_part(polymere: str, rules: dict[str, str]) -> int:
         letters_occurences[c] = letters_occurences.get(c, 0) + 1
         letters_occurences[polymere[i - 1]] = letters_occurences.get(polymere[i - 1], 0) + 1
         paires_occurences[pair] = paires_occurences.get(pair, 0) + 1
-    print(paires_occurences)
-    print(letters_occurences)
     for i in range(10):
         new_pairs = []
         for current_pair, nb in paires_occurences.items():
@@ -33,6 +31,7 @@ def second_part(polymere: str, rules: dict[str, str]) -> int:
             paires_occurences[pair] = nb
         print(letters_occurences)
     print(paires_occurences)
+
 
 def first_part(polymere: str, rules: dict[str, str]) -> int:
     for i in range(10):
