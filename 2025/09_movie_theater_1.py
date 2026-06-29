@@ -1,9 +1,11 @@
+# Second approach to run even with a lot of datas for the second part.
+# Still not working though. Missing : not have all the width and height.
+
+
 class Map:
 
     def __init__(self, tiles: list[tuple[int, int]]) -> None:
         self.tiles = sorted(tiles)
-        self.tiles_add = set(tiles)
-        self.tiles_and_x = set(tiles)
         self.tiles_set = set(tiles)
         self.width = max(x for x, y in tiles) + 1 if tiles else 0
         self.height = max(y for x, y in tiles) + 1 if tiles else 0

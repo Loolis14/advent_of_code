@@ -1,3 +1,5 @@
+# My first approach but doesn't work with a lot of datas.
+
 class Map:
 
     def __init__(self, tiles: list[tuple[int, int]],

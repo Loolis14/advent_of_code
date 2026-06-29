@@ -53,3 +53,18 @@ def bridge_repair(file: str) -> None:
 
 
 bridge_repair('test2.txt')
+
+"""
+First Version, december 2024
+
+import re
+test = open("test.txt").read()
+
+regex = re.compile(r'(\d+):( \d+)*')
+
+for line in test.splitlines():
+    result = int(line.split()[0][:-1])
+    match = regex.search(line)
+
+    print(match)
+"""

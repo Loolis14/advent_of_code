@@ -16,7 +16,6 @@ def remove_middle(positions: list[tuple]) -> int:
         if x == middle_x or y == middle_y:
             continue
         else:
-            # quadrant haut gauche
             if x < middle_x and y < middle_y:
                 robots_hg += 1
             elif x > middle_x and y < middle_y:
@@ -32,7 +31,6 @@ def first_part(robots: list[tuple]) -> int:
     new_positions = []
     for robot in robots:
         x_pos, y_pos, v_x, v_y = map(int, robot[0])
-        # ex: 11, 7 max
         new_position = (x_pos + v_x * 100) % 101, (y_pos + v_y * 100) % 103
         new_positions.append(new_position)
     nb_robots = remove_middle(new_positions)

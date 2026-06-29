@@ -1,7 +1,9 @@
-# distance : somme des 3 carrees
+# IN PROGRESS. There is probably something I don't under on the assignement
+# distance : somme des 3 squares
 
 def calcul_min_distance(
-        points: list[tuple[int, int, int]]) -> list[tuple[int, int]]:
+        points: list[tuple[int, int, int]]
+        ) -> list[tuple[int, int]]:
     distances = {}
     for i, (x1, y1, z1) in enumerate(points):
         distances[i] = (float('inf'), 0)
@@ -19,7 +21,7 @@ def calcul_min_distance(
     return connection_to_made
 
 
-def first_part(file: str):
+def first_part(file: str) -> list[set]:
     points = parsing(file)
     connections_to_make = calcul_min_distance(points)
     circuit_made: list[set] = []
@@ -33,7 +35,7 @@ def first_part(file: str):
                 break
         if not connection_made:
             circuit_made.append({point1, point2})
-    print(circuit_made)
+    return circuit_made
 
 
 def parsing(file: str) -> list[tuple[int, int, int]]:

@@ -22,5 +22,20 @@ def second_part(file: str) -> int:
 print('First part solution:', first_part('test2.txt'))
 print('Second part solution:', second_part('test2.txt'))
 
-# (?s) permet d'activer le DOTALL qui permet au point de prendre en
-# compte les \n également
+"""
+First Version, december 2024
+
+import re
+test = open("input_3.txt").read()
+regex = re.compile(r'mul\((\d+),(\d+)\)')
+delete = re.sub(r'(?<=don\'t\(\))(.*?)(?=do\(\))', "", test, flags=re.DOTALL)
+
+
+
+f = regex.findall(delete)
+acc = 0
+for match in f:
+    a,b = match
+    acc += int(a) * int(b)
+print(acc) #+triche
+"""

@@ -45,3 +45,53 @@ def second_part(file: str) -> int:
 
 # print('First part result:', first_part('test1.txt'))
 print('Second part result:', second_part('test2.txt'))
+
+"""
+First Version, december 2024
+
+test = "64554 35 906 6 6960985 5755 975820 0"
+l = []
+for number in test.split():
+    l.append(number)
+
+def blink(l):
+    sol = []
+    for n in l:
+        if n == "0" or n == 0 :
+            sol.append(1)
+        elif len(str(n)) % 2 == 0:
+            x = len(str(n))//2
+            n = str(n)
+            sol.append(int(n[:x]))
+            sol.append(int(n[x:]))
+        else:
+            sol.append(int(n)*2024)
+    return sol
+a = blink(l)
+b = blink(a)
+c = blink(b)
+d = blink(c)
+e = blink(d)
+f = blink(e)
+g = blink(f)
+h = blink(g)
+i = blink(h)
+j = blink(i)
+k = blink(j)
+l = blink(k)
+m = blink(l)
+n = blink(m)
+o = blink(n)
+p = blink(o)
+q = blink(p)
+r = blink(q)
+s = blink(r)
+t = blink(s)
+s = blink(t)
+u = blink(s)
+v = blink(u)
+w = blink(v)
+x = blink(w)
+
+print(len(x))
+"""

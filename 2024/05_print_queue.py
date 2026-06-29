@@ -1,6 +1,6 @@
 def parsing_rules(order_rules) -> dict[int, set[int]]:
     rules_sort = sorted(order_rules)
-    rules = {}
+    rules: dict[set] = {}
     for a, b in rules_sort:
         rules.setdefault(a, set()).add(b)
     return rules
@@ -86,3 +86,47 @@ def first_part(file: str) -> int:
 
 
 print('First part solution:', first_part('test2.txt'))
+
+"""
+First Version, december 2024
+
+import re
+test = open("input_5_pair.txt").read().splitlines()
+l = open("input_5_list.txt").read().splitlines()
+
+regex = re.compile(r'(\d+)(\|)(\d+)')
+
+non = []
+for list in l:
+    d={}
+    for i,n in enumerate(list.split(",")):
+        d[str(n)] = i
+
+    for match in test:
+        m = regex.search(match)
+        a,op,b = m.groups()
+        if a not in d or b not in d:
+            continue
+        elif d[str(a)] < d[str(b)]:
+            continue
+        else:
+            non.append(list)
+            break
+oui = []
+for el in l:
+    if el not in non:
+        oui.append(el)
+
+acc = 0
+for l3 in oui:
+    x = 0
+    oui2 = []
+    for n in l3.split(","):
+        x += 1
+        oui2.append(n)
+    y = x//2
+
+    acc += int(oui2[y])
+
+print(acc)
+"""

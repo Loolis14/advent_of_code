@@ -97,3 +97,42 @@ def second_part(file: str) -> int:
 
 # print('First part solution is:', first_part('test2.txt'))
 print('Second part solution is:', second_part('test2.txt'))
+
+"""
+First Version, december 2024
+
+PART 1:
+test = open("input_2.txt").read().splitlines()
+safe = 0
+
+for list in test:
+    l2 = []
+
+    for c in list.split():
+        if c == " ":
+            continue
+        else:
+            l2.append(int(c))
+
+    if l2[0] < l2[1]:
+        if l2 == sorted(l2):
+            for i in range(len(l2)-1):
+                if l2[i]==l2[i+1]:
+                    break
+                elif l2[i+1]-l2[i]>3:                   
+                    break
+            else:
+                safe += 1
+
+    elif l2[0] > l2[1]:
+        if l2 == sorted(l2,reverse=True):
+            for i in range(len(l2)-1):
+                if l2[i]==l2[i+1]:                    
+                    break
+                elif l2[i]-l2[i+1]>3:                                        
+                    break
+            else:
+                safe += 1
+
+print(safe)
+"""

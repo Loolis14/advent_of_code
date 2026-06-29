@@ -1,9 +1,5 @@
+# Look at the Gaussian elimination adapted to XOR operations.
 import re
-
-"""
-On peut le résoudre avec l'algorithme d'élimination de Gauss adapté au XOR.
-XOR et matrice.
-"""
 
 
 def parsing_diagram(diagram: str) -> dict[int, int]:
@@ -32,7 +28,6 @@ def first_part(file: str) -> None:
             buttons = parsing_buttons(line_split[1:-1])
             joltage_requirments = line_split[-1]
             print(buttons)
-
             break
 
 print('First part result: ', first_part('test1.txt'))

@@ -29,7 +29,8 @@ def first_part(file: str) -> int:
 print('First part solution is:', first_part('test2.txt'))
 
 
-# First Version in december 2024
+"""
+First Version, december 2024
 
 a = open("input_1.txt").read()
 pair = []
@@ -54,3 +55,4 @@ for c in pair:
     score += h_m * c
 
 print(score) #part 2 : 24316233
+"""

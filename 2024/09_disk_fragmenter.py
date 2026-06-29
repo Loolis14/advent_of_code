@@ -1,3 +1,5 @@
+# Second part still doesn't work.
+
 from collections import deque
 
 
@@ -147,3 +149,49 @@ def second_part_2(file: str) -> None:
 
 # print('First part solution:', first_part('test2.txt'))
 print('Second part solution:', second_part_2('test1.txt'))
+
+
+"""
+First Version, december 2024
+
+test = "2333133121414131402"
+
+
+matrice = ""
+for i,n in enumerate(test):
+    if i%2==0:
+        if i == 0:
+            matrice += int(n)*str(i)
+        else:
+            matrice += int(n)*str(i//2)
+    else:
+        matrice += "."*int(n)
+x = len(matrice)
+
+matrice_l = []
+for n2 in matrice:
+    matrice_l.append(n2)
+
+
+sol = []
+for n in matrice_l:
+    if n.isdigit():
+        sol.append(n)
+    else:
+        if matrice_l[-1].isdigit():
+            x=matrice_l[-1]
+            sol += x
+            del matrice_l[-1]
+        else:
+            while len(sol) != len(matrice):
+                while matrice_l[-1] == ".":
+                    del matrice_l[-1]
+            x=matrice_l[-1]
+            sol += x
+            del matrice_l[-1]
+acc = 0
+for i,c in enumerate(sol):
+    acc += i*int(c)
+
+print(acc)
+"""
